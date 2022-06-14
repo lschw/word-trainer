@@ -755,13 +755,9 @@ class Database
 
         // First pass
         // - Skip all finished questions
-        // - Skip all not yet asked questions
         // - Skip all questions which were shown within minimum question distance (consider also inverse questions)
         foreach ($questions as $question) {
             if ($question["correct"] >= $training["num_required_correct_answers"]) {
-                continue;
-            }
-            if (count($question["history"]) == 0) {
                 continue;
             }
             if (end($question["history"]) + $training["min_distance_same_question"] > $training["training_counter"]) {
@@ -787,36 +783,6 @@ class Database
         }
 
         // Second pass
-        // - Skip all finished questions
-        // - Skip all already asked questions
-        // - Skip all new questions where inverse was already shown within minimum question distance
-        foreach ($questions as $question) {
-            if ($question["correct"] >= $training["num_required_correct_answers"]) {
-                continue;
-            }
-            if (count($question["history"]) > 0) {
-                continue;
-            }
-
-            $history_cnt = 0;
-            $found = false;
-            foreach (array_reverse($history) as $question2) {
-                if ($history_cnt == $training["min_distance_same_question"]) {
-                    break;
-                }
-                if ($question2["word"] == $question["word"]) {
-                    $found = true;
-                    break;
-                }
-                $history_cnt++;
-            }
-            if ($found) {
-                continue;
-            }
-            return $question;
-        }
-
-        // Third pass
         // - Skip all finished questions
         foreach ($questions as $question) {
             if ($question["correct"] >= $training["num_required_correct_answers"]) {
