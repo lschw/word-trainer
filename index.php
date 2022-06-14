@@ -4,7 +4,7 @@ require_once("config.php");
 /**
  * Constants
  */
-define("VERSION", "2.0.0");
+define("VERSION", "2.0.1");
 define("PATH_ROOT", realpath(dirname(__FILE__))."/");
 define("PATH_LIB", PATH_ROOT."lib/");
 define("PATH_PAGES", PATH_ROOT."pages/");
