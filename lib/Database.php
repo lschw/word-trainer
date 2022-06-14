@@ -85,6 +85,8 @@ class Database
             ignore_case BOOLEAN NOT NULL,
             ignore_accent BOOLEAN NOT NULL,
             ignore_punctuation_marks BOOLEAN NOT NULL,
+            ignore_article_lang1 BOOLEAN NOT NULL,
+            ignore_article_lang2 BOOLEAN NOT NULL,
             require_only_one_meaning BOOLEAN NOT NULL
         );
         CREATE TABLE IF NOT EXISTS {$this->table_training_words} (
@@ -496,6 +498,8 @@ class Database
      * @param bool $ignore_case  Ignore case sensitivity when comparing the answer with the correct answer
      * @param bool $ignore_accent  Ignore accents when comparing the answer with the correct answer
      * @param bool $ignore_punctuation_marks  Ignore punctuation marks when comparing the answer with the correct answer
+     * @param bool $ignore_article_lang1  Ignore article in language 1 when comparing the answer with the correct answer
+     * @param bool $ignore_article_lang2  Ignore article in language 2 when comparing the answer with the correct answer
      * @param bool $require_only_one_meaning  Require only a single correct meaning to be entered
      * @param array $list_ids  Use the words of these lists in the training
      * @return int Id of new created training
@@ -509,6 +513,8 @@ class Database
         bool $ignore_case,
         bool $ignore_accent,
         bool $ignore_punctuation_marks,
+        bool $ignore_article_lang1,
+        bool $ignore_article_lang2,
         bool $require_only_one_meaning,
         array $list_ids
     ): int {
@@ -534,6 +540,8 @@ class Database
             $ignore_case,
             $ignore_accent,
             $ignore_punctuation_marks,
+            $ignore_article_lang1,
+            $ignore_article_lang2,
             $require_only_one_meaning,
             $list_ids
         );
@@ -545,14 +553,16 @@ class Database
                 {$this->table_trainings}
                 (
                     name, mode, num_required_correct_answers, correct_answers_consecutive, min_distance_same_question,
-                    ignore_case, ignore_accent, ignore_punctuation_marks, require_only_one_meaning
+                    ignore_case, ignore_accent, ignore_punctuation_marks, ignore_article_lang1, ignore_article_lang2,
+                    require_only_one_meaning
                 )
             VALUES
-                (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ");
         $stmt->execute([$name, $mode, $num_required_correct_answers, intval($correct_answers_consecutive),
             $min_distance_same_question, intval($ignore_case), intval($ignore_accent),
-            intval($ignore_punctuation_marks), intval($require_only_one_meaning)
+            intval($ignore_punctuation_marks), intval($ignore_article_lang1), intval($ignore_article_lang2),
+            intval($require_only_one_meaning)
         ]);
         $training_id = intval($this->pdo->lastInsertId());
 
@@ -658,7 +668,8 @@ class Database
             "num_correct"]);
         $training = array_values_to_bool(
             $training,
-            ["ignore_case", "ignore_accent", "ignore_punctuation_marks", "require_only_one_meaning"]
+            ["ignore_case", "ignore_accent", "ignore_punctuation_marks", "ignore_article_lang1", "ignore_article_lang2",
+            "require_only_one_meaning"]
         );
         $training["num_wrong"] = $training["training_counter"] - $training["num_correct"];
         return $training;
@@ -866,8 +877,10 @@ class Database
         $answer_given_parsed[] = trim($answer); // Add answer also as a whole to handle answers containing commas
         $answer_given_parsed = array_filter(array_map("trim", $answer_given_parsed));
         $answer_correct_parsed = $question["word2_parsed"]["words"];
+        $answer_lang = $question["lang2"];
         if ($question["mode"] == "2->1") {
             $answer_correct_parsed = $question["word1_parsed"]["words"];
+            $answer_lang = $question["lang1"];
         }
 
         // Apply answer formatting for comparison
@@ -887,6 +900,24 @@ class Database
             $answer_given_parsed = array_map("remove_punctuation_chars", $answer_given_parsed);
             for ($i = 0; $i < count($answer_correct_parsed); $i++) {
                 $answer_correct_parsed[$i] = array_map("remove_punctuation_chars", $answer_correct_parsed[$i]);
+            }
+        }
+        if (($training["ignore_article_lang1"] && $question["mode"] == "2->1")
+            || ($training["ignore_article_lang2"] && $question["mode"] == "1->2")
+        ) {
+            $answer_given_parsed = array_map(
+                function ($x) use ($answer_lang) {
+                    return remove_article($x, $answer_lang);
+                },
+                $answer_given_parsed
+            );
+            for ($i = 0; $i < count($answer_correct_parsed); $i++) {
+                $answer_correct_parsed[$i] = array_map(
+                    function ($x) use ($answer_lang) {
+                        return remove_article($x, $answer_lang);
+                    },
+                    $answer_correct_parsed[$i]
+                );
             }
         }
 
@@ -1015,6 +1046,8 @@ class Database
      * @param  bool $ignore_case  @see addTraining()
      * @param  bool $ignore_accent  @see addTraining()
      * @param  bool $ignore_punctuation_marks  @see addTraining()
+     * @param  bool $ignore_article_lang1  @see addTraining()
+     * @param  bool $ignore_article_lang2  @see addTraining()
      * @param  bool $require_only_one_meaning  @see addTraining()
      * @param  array $list_ids  @see addTraining()
      */
@@ -1027,6 +1060,8 @@ class Database
         bool &$ignore_case,
         bool &$ignore_accent,
         bool &$ignore_punctuation_marks,
+        bool &$ignore_article_lang1,
+        bool &$ignore_article_lang2,
         bool &$require_only_one_meaning,
         array &$list_ids
     ): void {

@@ -13,6 +13,8 @@ $min_distance_same_question = "20";
 $ignore_case = true;
 $ignore_accent = true;
 $ignore_punctuation_marks = true;
+$ignore_article_lang1 = false;
+$ignore_article_lang2 = true;
 $require_only_one_meaning = true;
 $words = [];
 
@@ -69,25 +71,36 @@ if ($action == "save") {
     if (!isset($_POST["name"])
         || !isset($_POST["mode"])
         || !isset($_POST["num_required_correct_answers"])
-        || !isset($_POST["correct_answers_consecutive"])
         || !isset($_POST["min_distance_same_question"])
-        || !isset($_POST["ignore_case"])
-        || !isset($_POST["ignore_accent"])
-        || !isset($_POST["ignore_punctuation_marks"])
-        || !isset($_POST["require_only_one_meaning"])) {
+    ) {
         header("Location:".HTTP_ROOT);
     }
     try {
+        $bool_params = [
+            "correct_answers_consecutive" => false,
+            "ignore_case" => false,
+            "ignore_accent" => false,
+            "ignore_punctuation_marks" => false,
+            "ignore_article_lang1" => false,
+            "ignore_article_lang2" => false,
+            "require_only_one_meaning" => false
+        ];
+        foreach ($bool_params as $bool_param=>$value) {
+            $bool_params[$bool_param] = (isset($_POST[$bool_param]) && $_POST[$bool_param] == "yes") ? true : false;
+        }
+
         $_db->addTraining(
             $_POST["name"],
             $_POST["mode"],
             intval($_POST["num_required_correct_answers"]),
-            ($_POST["correct_answers_consecutive"] == "yes") ? true : false,
+            $bool_params["correct_answers_consecutive"],
             intval($_POST["min_distance_same_question"]),
-            ($_POST["ignore_case"] == "yes") ? true : false,
-            ($_POST["ignore_accent"] == "yes") ? true : false,
-            ($_POST["ignore_punctuation_marks"] == "yes") ? true : false,
-            ($_POST["require_only_one_meaning"] == "yes") ? true : false,
+            $bool_params["ignore_case"],
+            $bool_params["ignore_accent"],
+            $bool_params["ignore_punctuation_marks"],
+            $bool_params["ignore_article_lang1"],
+            $bool_params["ignore_article_lang2"],
+            $bool_params["require_only_one_meaning"],
             $list_ids
         );
         header("Location:".HTTP_ROOT);
@@ -155,6 +168,20 @@ if ($action == "save") {
     Ignore punctuation marks for evaluation
 </label>
 <span class="input-help-text">Sentences can be entered without punctuations marks "?!," ...</span>
+<br>
+
+<label for="ignore_article_lang1">
+    <input type="checkbox" name="ignore_article_lang1" value="yes" <?=(($ignore_article_lang1) ? "checked" : "")?> />
+    Ignore article in language 1 for evaluation
+</label>
+<span class="input-help-text">Words in language 1 can be entered without articles.</span>
+<br>
+
+<label for="ignore_article_lang2">
+    <input type="checkbox" name="ignore_article_lang2" value="yes" <?=(($ignore_article_lang2) ? "checked" : "")?> />
+    Ignore article in language 2 for evaluation
+</label>
+<span class="input-help-text">Words in language 2 can be entered without articles.</span>
 <br>
 
 <label for="require_only_one_meaning">

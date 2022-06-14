@@ -446,6 +446,8 @@ class TestDatabase extends TestSuite
             "ignore_case" => true,
             "ignore_accent" => true,
             "ignore_punctuation_marks" => true,
+            "ignore_article_lang1" => true,
+            "ignore_article_lang2" => true,
             "require_only_one_meaning" => true,
         ];
         $training_id = $this->db->addTraining(
@@ -457,6 +459,8 @@ class TestDatabase extends TestSuite
             $training1["ignore_case"],
             $training1["ignore_accent"],
             $training1["ignore_punctuation_marks"],
+            $training1["ignore_article_lang1"],
+            $training1["ignore_article_lang2"],
             $training1["require_only_one_meaning"],
             [$list1_id, $list2_id]
         );
@@ -471,6 +475,8 @@ class TestDatabase extends TestSuite
         $this->expectEq($training1_check["min_distance_same_question"], $training1["min_distance_same_question"]);
         $this->expectEq($training1_check["ignore_case"], $training1["ignore_case"]);
         $this->expectEq($training1_check["ignore_punctuation_marks"], $training1["ignore_punctuation_marks"]);
+        $this->expectEq($training1_check["ignore_article_lang1"], $training1["ignore_article_lang1"]);
+        $this->expectEq($training1_check["ignore_article_lang2"], $training1["ignore_article_lang2"]);
         $this->expectEq($training1_check["require_only_one_meaning"], $training1["require_only_one_meaning"]);
         $this->expectEq($training1_check["num_words"], count($words1)+count($words2));
         $this->expectEq(
@@ -499,6 +505,8 @@ class TestDatabase extends TestSuite
             "ignore_case" => true,
             "ignore_accent" => true,
             "ignore_punctuation_marks" => true,
+            "ignore_article_lang1" => true,
+            "ignore_article_lang2" => true,
             "require_only_one_meaning" => true,
         ];
         $training_id = $this->db->addTraining(
@@ -510,6 +518,8 @@ class TestDatabase extends TestSuite
             $training1["ignore_case"],
             $training1["ignore_accent"],
             $training1["ignore_punctuation_marks"],
+            $training1["ignore_article_lang1"],
+            $training1["ignore_article_lang2"],
             $training1["require_only_one_meaning"],
             [$list1_id]
         );
@@ -522,6 +532,8 @@ class TestDatabase extends TestSuite
             $training1["ignore_case"],
             $training1["ignore_accent"],
             $training1["ignore_punctuation_marks"],
+            $training1["ignore_article_lang1"],
+            $training1["ignore_article_lang2"],
             $training1["require_only_one_meaning"],
             [$list1_id]
         );
@@ -540,6 +552,8 @@ class TestDatabase extends TestSuite
             "ignore_case" => true,
             "ignore_accent" => true,
             "ignore_punctuation_marks" => true,
+            "ignore_article_lang1" => true,
+            "ignore_article_lang2" => true,
             "require_only_one_meaning" => true,
         ];
         $training_id = $this->db->addTraining(
@@ -551,6 +565,8 @@ class TestDatabase extends TestSuite
             $training1["ignore_case"],
             $training1["ignore_accent"],
             $training1["ignore_punctuation_marks"],
+            $training1["ignore_article_lang1"],
+            $training1["ignore_article_lang2"],
             $training1["require_only_one_meaning"],
             [12345]
         );
@@ -576,6 +592,8 @@ class TestDatabase extends TestSuite
             "ignore_case" => true,
             "ignore_accent" => true,
             "ignore_punctuation_marks" => true,
+            "ignore_article_lang1" => true,
+            "ignore_article_lang2" => true,
             "require_only_one_meaning" => true,
         ];
         $training_id = $this->db->addTraining(
@@ -587,6 +605,8 @@ class TestDatabase extends TestSuite
             $training1["ignore_case"],
             $training1["ignore_accent"],
             $training1["ignore_punctuation_marks"],
+            $training1["ignore_article_lang1"],
+            $training1["ignore_article_lang2"],
             $training1["require_only_one_meaning"],
             [$list1_id]
         );
@@ -611,6 +631,8 @@ class TestDatabase extends TestSuite
             "ignore_case" => true,
             "ignore_accent" => true,
             "ignore_punctuation_marks" => true,
+            "ignore_article_lang1" => true,
+            "ignore_article_lang2" => true,
             "require_only_one_meaning" => true,
         ];
         $training_id = $this->db->addTraining(
@@ -622,6 +644,8 @@ class TestDatabase extends TestSuite
             $training1["ignore_case"],
             $training1["ignore_accent"],
             $training1["ignore_punctuation_marks"],
+            $training1["ignore_article_lang1"],
+            $training1["ignore_article_lang2"],
             $training1["require_only_one_meaning"],
             [$list1_id]
         );
@@ -644,6 +668,8 @@ class TestDatabase extends TestSuite
             "ignore_case" => true,
             "ignore_accent" => true,
             "ignore_punctuation_marks" => true,
+            "ignore_article_lang1" => true,
+            "ignore_article_lang2" => true,
             "require_only_one_meaning" => true,
         ];
         $training_id = $this->db->addTraining(
@@ -655,6 +681,8 @@ class TestDatabase extends TestSuite
             $training1["ignore_case"],
             $training1["ignore_accent"],
             $training1["ignore_punctuation_marks"],
+            $training1["ignore_article_lang1"],
+            $training1["ignore_article_lang2"],
             $training1["require_only_one_meaning"],
             [$list1]
         );
@@ -667,6 +695,8 @@ class TestDatabase extends TestSuite
             "ignore_case" => true,
             "ignore_accent" => true,
             "ignore_punctuation_marks" => true,
+            "ignore_article_lang1" => true,
+            "ignore_article_lang2" => true,
             "require_only_one_meaning" => true,
         ];
         $training_id = $this->db->addTraining(
@@ -678,6 +708,8 @@ class TestDatabase extends TestSuite
             $training2["ignore_case"],
             $training2["ignore_accent"],
             $training2["ignore_punctuation_marks"],
+            $training2["ignore_article_lang1"],
+            $training2["ignore_article_lang2"],
             $training2["require_only_one_meaning"],
             [$list1_id]
         );
@@ -719,6 +751,8 @@ class TestDatabase extends TestSuite
             "ignore_case" => true,
             "ignore_accent" => true,
             "ignore_punctuation_marks" => true,
+            "ignore_article_lang1" => true,
+            "ignore_article_lang2" => true,
             "require_only_one_meaning" => true,
         ];
         $training_id = $this->db->addTraining(
@@ -730,6 +764,8 @@ class TestDatabase extends TestSuite
             $training1["ignore_case"],
             $training1["ignore_accent"],
             $training1["ignore_punctuation_marks"],
+            $training1["ignore_article_lang1"],
+            $training1["ignore_article_lang2"],
             $training1["require_only_one_meaning"],
             [$list1_id]
         );
