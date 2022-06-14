@@ -82,6 +82,7 @@ try {
     <title>Word Trainer<?=($_title != "") ? " - {$_title}" : ""?></title>
     <link href="<?=HTTP_CSS?>reset.css" rel="stylesheet">
     <link href="<?=HTTP_CSS?>page.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
 <div id="container">
