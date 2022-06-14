@@ -566,11 +566,16 @@ class Database
                 (?, ?, ?)
         ");
 
+        $words_added = [];
         foreach ($list_ids as $list_id) {
             $words = $this->getWords($list_id);
 
             $list_check = $this->getList($list_id); // Ensure list exists
             foreach ($words as $word) {
+                if (in_array([$word["word1"], $word["word2"]], $words_added)) {
+                    // Prevent adding word duplicates
+                    continue;
+                }
                 if ($mode == "1->2" || $mode == "2->1") {
                     $stmt->execute([$training_id, $word["id"], $mode]);
                 }
@@ -578,6 +583,7 @@ class Database
                     $stmt->execute([$training_id, $word["id"], "1->2"]);
                     $stmt->execute([$training_id, $word["id"], "2->1"]);
                 }
+                $words_added[] = [$word["word1"], $word["word2"]];
             }
         }
         $this->commitTransaction();
