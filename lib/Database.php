@@ -888,23 +888,20 @@ class Database
         }
 
         // Check for correct answer
-        $num_words_correct = 0;
+        $num_correctly_answered = 0;
+        $num_real_correct_answers = 0;
         foreach ($answer_correct_parsed as $answer_correct) {
-            $found = true;
+            $num_real_correct_answers += count($answer_correct);
             foreach ($answer_correct as $answer_correct_gender) {
-                if (!in_array($answer_correct_gender, $answer_given_parsed)) {
-                    $found = false;
-                    break;
+                if (in_array($answer_correct_gender, $answer_given_parsed)) {
+                    $num_correctly_answered++;
                 }
-            }
-            if ($found) {
-                $num_words_correct++;
             }
         }
 
         $is_correct = false;
-        if ($num_words_correct == count($answer_correct_parsed)
-            || ($num_words_correct > 0 && $training["require_only_one_meaning"])) {
+        if ($num_correctly_answered == $num_real_correct_answers
+            || ($num_correctly_answered > 0 && $training["require_only_one_meaning"])) {
             $is_correct = true;
         }
 
