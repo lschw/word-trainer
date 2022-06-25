@@ -27,7 +27,8 @@ function convert_accented_chars_to_ascii(string $str): string
  */
 function remove_punctuation_chars(string $str): string
 {
-    return preg_replace("/:|;|,|\.|!|&iexcl;|\?|&iquest;|؟|-|&middot;|\~/", "", $str);
+    $str = preg_replace("/:|;|,|\.|!|&iexcl;|\?|&iquest;|؟|-|&middot;|\~/", " ", $str);
+    return trim(preg_replace("/\s+/", " ", $str));
 }
 
 
