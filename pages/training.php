@@ -119,6 +119,9 @@ if ($action == "save") {
 <?php endif; ?>
 
 <form action="<?=HTTP_ROOT?>training?action=save&list_ids=<?=implode("_", $list_ids)?>" method="post">
+<div class="align-right">
+    <input type="submit" value="Save"  />
+</div>
 <label for="name">Name</label>
 <input type="text" value="<?=htmlentities($name)?>" name="name" />
 <br>

@@ -111,7 +111,7 @@ function get_selected_options(id)
 }
 </script>
 
-<h2>Word lists</h2>
+<h2>Word Lists</h2>
 <select id="lists" multiple="multiple" onchange="change_word_list();">
 <?php foreach ($lists as $list): ?>
     <option ondblclick="edit_list();" value="<?=$list["id"]?>">
@@ -123,7 +123,7 @@ function get_selected_options(id)
 <input type="button" value="Edit" id="button_list_edit" onclick="edit_list();" title="Edit selected word list" />
 <input type="button" value="Delete" id="button_list_delete" onclick="delete_list();" title="Delete selected word list" />
 <input type="button" value="Export" id="button_list_export" onclick="export_list();" title="Download selected word list as csv file" />
-
+<input type="button" value="Train" id="button_training_new" onclick="new_training();" title="Create new training for (multiple) selected word lists" />
 
 <h2>Trainings</h2>
 <select id="trainings" multiple="multiple" onchange="change_training_list();">
@@ -133,7 +133,6 @@ function get_selected_options(id)
         <?=$training["num_correct"]?>/<?=$training["num_questions"]?>)
     </option>
 <?php endforeach; ?>
-<input type="button" value="New" id="button_training_new" onclick="new_training();" title="Create new training for (multiple) selected word lists" />
 <input type="button" value="Delete" id="button_training_delete" onclick="delete_training();" title="Delete selected training" />
 <input type="button" value="Start" id="button_training_start" onclick="start_training();" title="Start selected training" />
 </select>
