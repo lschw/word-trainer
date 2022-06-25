@@ -89,7 +89,7 @@ if ($action == "save") {
             $bool_params[$bool_param] = (isset($_POST[$bool_param]) && $_POST[$bool_param] == "yes") ? true : false;
         }
 
-        $_db->addTraining(
+        $training_id = $_db->addTraining(
             $_POST["name"],
             $_POST["mode"],
             intval($_POST["num_required_correct_answers"]),
@@ -103,7 +103,7 @@ if ($action == "save") {
             $bool_params["require_only_one_meaning"],
             $list_ids
         );
-        header("Location:".HTTP_ROOT);
+        header("Location:".HTTP_ROOT."question?training_id=".$training_id);
     } catch (DbException $e) {
         $error = $e->getMessage();
     }
