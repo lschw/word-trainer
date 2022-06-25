@@ -30,7 +30,7 @@ function delete_list() {
         "<?=$list['id']?>" : "<?=$list['name']?>",
 <?php endforeach; ?>
     };
-    if(list_ids.length != 0) {
+    if(list_ids.length == 1) {
         if (confirm("Do you really want to delete list '" + lists[list_ids[0]] + "'?")) {
             location.href = "<?=HTTP_ROOT?>list?action=delete&id=" + list_ids[0];
         }
@@ -48,6 +48,12 @@ function change_training_list() {
     var training_ids = get_selected_options("trainings");
     document.getElementById("button_training_delete").disabled = (training_ids.length != 1);
     document.getElementById("button_training_start").disabled = (training_ids.length != 1);
+}
+
+function on_key_down_list(event) {
+    if(event.keyCode == 46) {
+        delete_list();
+    }
 }
 
 function new_training() {
@@ -73,7 +79,7 @@ function delete_training()
         "<?=$training['id']?>" : "<?=$training['name']?>",
 <?php endforeach; ?>
     };
-    if(training_ids.length != 0) {
+    if(training_ids.length == 1) {
         if (confirm("Do you really want to delete training '" + trainings[training_ids[0]] + "'?")) {
             location.href = "<?=HTTP_ROOT?>training?action=delete&id=" + training_ids[0];
         }
@@ -84,6 +90,12 @@ function start_training() {
     var training_ids = get_selected_options("trainings");
     if(training_ids.length != 0) {
         location.href = "<?=HTTP_ROOT?>question?training_id=" + training_ids[0];
+    }
+}
+
+function on_key_down_training(event) {
+    if(event.keyCode == 46) {
+        delete_training();
     }
 }
 
@@ -112,7 +124,7 @@ function get_selected_options(id)
 </script>
 
 <h2>Word Lists</h2>
-<select id="lists" multiple="multiple" onchange="change_word_list();">
+<select id="lists" multiple="multiple" onchange="change_word_list();" onkeydown="on_key_down_list(event);">
 <?php foreach ($lists as $list): ?>
     <option ondblclick="edit_list();" value="<?=$list["id"]?>">
         <?=$list["name"]?> (<?=$list["lang1"]?>/<?=$list["lang2"]?>), <?=$list["num_words"]?> words
@@ -126,7 +138,7 @@ function get_selected_options(id)
 <input type="button" value="Train" id="button_training_new" onclick="new_training();" title="Create new training for (multiple) selected word lists" />
 
 <h2>Trainings</h2>
-<select id="trainings" multiple="multiple" onchange="change_training_list();">
+<select id="trainings" multiple="multiple" onchange="change_training_list();" onkeydown="on_key_down_training(event);">
 <?php foreach ($trainings as $training): ?>
     <option ondblclick="start_training();" value="<?=$training["id"]?>">
         <?=$training["name"]?> (<?=$training["num_words"]?> words,
