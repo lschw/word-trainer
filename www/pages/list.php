@@ -211,7 +211,7 @@ function append_rows(num_rows)
     for (var i = 0; i < num_rows; i++) {
         var row = "<tr>";
         var row_num = tbody.children.length + 1;
-        row += "<td>" + row_num + "</td>";
+        row += "<td class=\"align-right\">" + row_num + "</td>";
         row += "<td><input type=\"text\" value=\"\" name=\"word1-new" + row_num + "\"/></td>";
         row += "<td><input type=\"text\" value=\"\" name=\"word2-new" + row_num + "\"/></td>";
         row += "</tr>";
