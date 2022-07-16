@@ -57,7 +57,7 @@ if ($action == "new" || $action == "save") {
         foreach ($list_ids as $id) {
             $words = array_merge($words, $_db->getWords($id));
             $list = $_db->getList($id);
-            $name .= " / " . substr($list["name"], 0, 20);
+            $name .= " / " . mb_substr($list["name"], 0, 20);
         }
     } catch (DbException $e) {
         header("Location:".HTTP_ROOT);
